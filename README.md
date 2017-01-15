@@ -1,30 +1,53 @@
-TODO: add description
+**API endpoints**
 
-*Project description*
+`/health`  for health checks
 
-*Libraries used*
-Subzero/Kryo for serialization
+`/cacheInfo` number of unique words in cache
 
-API endpoints:
-
-*Usage*
-
-curl -X PUT -H "Accept: application/json" -H "Content-type: application/json" -d '{"text":"aloha", "ignoreCache":false}' http://localhost:8080/to-image | jq -r '.[0].image' | base64 --decode -o aloha.gif
-
-with docker 
+`/to-image` returns images for text
 
 
-build docker image:
-mvn clean package docker:build
+**Usage examples**
+
+`curl http://${HOST}:${PORT}/to-image?word=hi > hi.gif`
+creates gif file for requested word
+
+`curl -X PUT -H "Accept: application/json" -H "Content-type: application/json" -d '{"text":"yo man", "ignoreCache":false}' http://${HOST}:${PORT}/to-image`
+returns result in JSON for requested text (image for each word in text)
+
+*Request schema*
+- String text
+- boolean ignoreCache
+
+*Response schema*
+ (JSON array of)
+- String word
+- String reference
+- String image
+
+image is represented in BASE64 for PUT request
+
+example which converts output into gif file
+`curl -X PUT -H "Accept: application/json" -H "Content-type: application/json" -d '{"text":"hi", "ignoreCache":false}' http://${HOST}:${PORT}/to-image | jq -r '.[0].image' | base64 --decode -o hi.gif`
 
 
+**build Docker image:**
+`mvn clean package docker:build`
 
-Supported endpoint by default:
-Springs:
-/health
-/trace
-... others
 
-custom: 
-/cacheInfo - shows number of cached words
+**Run all with docker-compose**
+`docker-compose up -d`
+will run api with hazelcast. 
+docker-compose will only start all containers, but not wait for readiness.
+Use /health endpoint to check if containers ready. 
+It may take about 20 seconds if dependent images already exist. 
+`docker-compose down` to stop and remove containers
 
+
+*Libraries and frameworks used*
+- **Spring Boot** as web server
+- **Subzero/Kryo** for serialization
+- **Hazelcast** client
+- **Lombok** for some code generation, like getters, hashCode etc 
+- **Jayway** Json parsing
+- **OkHttp** as http client 
