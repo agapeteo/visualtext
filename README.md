@@ -28,4 +28,3 @@ Springs:
 custom: 
 /cacheInfo - shows number of cached words
 
-todo: remove retry framework
