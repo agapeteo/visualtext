@@ -47,7 +47,7 @@ public class DrawRemoteImageTask implements Callable<TextImageResponse>{
         result.setReference(imageUrl);
 
         byte[] imageBytes = imageProvider.getImageForUrl(imageUrl);
-        result.setImage(encode(imageBytes));
+        result.setImage(imageBytes == null ? null : encode(imageBytes));
 
         return result;
     }
