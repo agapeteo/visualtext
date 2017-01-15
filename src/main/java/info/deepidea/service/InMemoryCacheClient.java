@@ -8,12 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Data
-@Component
 public class InMemoryCacheClient implements CacheClient {
     private final ConcurrentMap<String, TextImageResponse> map;
 
     public InMemoryCacheClient() {
-        map = new ConcurrentHashMap();
+        map = new ConcurrentHashMap<>();
     }
 
     @Override
