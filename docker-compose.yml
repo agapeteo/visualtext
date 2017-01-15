@@ -1,0 +1,16 @@
+version: '2'
+services:
+  api:
+    image: "visualtext"
+    ports:
+     - "8080:8080"
+    links:
+    - hazelcast
+    environment:
+    - hazelcast.server=hazelcast
+    depends_on:
+    - hazelcast
+  hazelcast:
+    image: "hazelcast/hazelcast"
+    ports:
+    - "5701:5701"
