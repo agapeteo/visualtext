@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 @ConfigurationProperties
 public class VisualTextApplication {
 
-	@Value("${hazelcast.server:localhost}")
+	@Value("${HAZELCAST_SERVER:localhost}")
 	private String hazelcastServer;
 
 	public static void main(String[] args) {

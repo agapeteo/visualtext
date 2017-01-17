@@ -7,7 +7,7 @@ services:
     links:
     - hazelcast
     environment:
-    - hazelcast.server=hazelcast
+    - HAZELCAST_SERVER=hazelcast
     depends_on:
     - hazelcast
   hazelcast:
