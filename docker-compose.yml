@@ -11,6 +11,16 @@ services:
     depends_on:
     - hazelcast
   hazelcast:
-    image: "hazelcast/hazelcast"
-    ports:
-    - "5701:5701"
+      image: "agapeteo/hazelcast-zookeeper-member"
+      ports:
+       - "5701"
+      links:
+      - zookeeper
+      environment:
+      - ZOOKEEPER_URL=zookeeper:2181
+      depends_on:
+      - zookeeper
+  zookeeper:
+      image: "zookeeper"
+      ports:
+      - "2181:2181"

@@ -26,6 +26,7 @@ public class TextImageController {
         return service.toImageBytes(word);
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody TextImageResponse[] textToResponse(@RequestBody TextImageRequest request) {
         return service.getImages(request);

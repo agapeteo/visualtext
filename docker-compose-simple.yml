@@ -1,0 +1,16 @@
+version: '2'
+services:
+  api:
+    image: "agapeteo/visualtext"
+    ports:
+     - "8080:8080"
+    links:
+    - hazelcast
+    environment:
+    - HAZELCAST_SERVER=hazelcast
+    depends_on:
+    - hazelcast
+  hazelcast:
+    image: "hazelcast/hazelcast:3.7.4"
+    ports:
+    - "5701:5701"
