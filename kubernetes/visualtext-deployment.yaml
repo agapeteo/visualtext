@@ -5,7 +5,7 @@ metadata:
     app: visualtext
   name: visualtext
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: visualtext
@@ -40,5 +40,8 @@ spec:
           initialDelaySeconds: 50
           timeoutSeconds: 10
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 150m
       restartPolicy: Always
 
