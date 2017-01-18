@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: visualtext
+  name: visualtext
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: visualtext
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: visualtext
+      name: visualtext
+    spec:
+      containers:
+      - name: visualtext
+        image: agapeteo/visualtext:1.0.2
+        env:
+        - name: HAZELCAST_SERVER
+          value: hazelcast
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 50
+          timeoutSeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 50
+          timeoutSeconds: 10
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+

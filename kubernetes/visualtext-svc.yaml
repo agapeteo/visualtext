@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: visualtext
+  name: visualtext
+spec:
+  ports:
+  - name: web-port
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: visualtext
+  type: NodePort
