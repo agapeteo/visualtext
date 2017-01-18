@@ -1,4 +1,4 @@
-**API endpoints**
+#API endpoints
 
 `/health`  for health checks
 
@@ -7,7 +7,7 @@
 `/to-image` returns images for text
 
 
-**Usage examples**
+#Usage examples
 
 `curl http://${HOST}:${PORT}/to-image?word=hi > hi.gif`
 creates gif file for requested word
@@ -15,11 +15,11 @@ creates gif file for requested word
 `curl -X PUT -H "Accept: application/json" -H "Content-type: application/json" -d '{"text":"yo man", "ignoreCache":false}' http://${HOST}:${PORT}/to-image`
 returns result in JSON for requested text (image for each word in text)
 
-*Request schema*
+#Request schema
 - String text
 - boolean ignoreCache
 
-*Response schema*
+#Response schema
  (JSON array of)
 - String word
 - String reference
@@ -31,11 +31,11 @@ example which converts output into gif file
 `curl -X PUT -H "Accept: application/json" -H "Content-type: application/json" -d '{"text":"hi", "ignoreCache":false}' http://${HOST}:${PORT}/to-image | jq -r '.[0].image' | base64 --decode -o hi.gif`
 
 
-**build Docker image:**
+#build Docker image
 `mvn clean package docker:build`
 
 
-**Run all with docker-compose**
+#Run all with docker-compose
 `docker-compose up -d`
 will run api with hazelcast. 
 docker-compose will only start all containers, but not wait for readiness.
@@ -44,7 +44,22 @@ It may take about 20 seconds if dependent images already exist.
 `docker-compose down` to stop and remove containers
 
 
-*Libraries and frameworks used*
+#Kubernetes usage examples
+`kubectl create -f kubernetes`
+create all deployments, services and hpa
+
+`kubectl get po -w`
+get list of pods and watch for changes
+
+`kubectl get hpa -w`
+get autoscalers and watch for changes
+
+`kubectl scale --current-replicas=2 --replicas=3 deployment/hazelcast`
+scale hazelcast deployment
+
+
+
+#Libraries and frameworks used
 - **Spring Boot** as web server
 - **Subzero/Kryo** for serialization
 - **Hazelcast** client
