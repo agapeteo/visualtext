@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: visualtext-webui-config
+data:
+  default.conf: |
+      server {
+              listen       80;
+              server_name  localhost;
+
+              location / {
+                  set_by_lua $webui_path 'return os.getenv("WEBUI_PATH")';
+
+                  root   /nginx/html/$webui_path;
+                  index  index.html index.htm;
+              }
+
+              location /to-image {
+                  resolver 10.0.0.10;
+
+                  set_by_lua $api_host 'return os.getenv("API_HOST")';
+                  set_by_lua $api_port 'return os.getenv("API_PORT")';
+
+                  proxy_pass http://$api_host:$api_port;
+              }
+              location /test {
+                  resolver 10.0.0.10;
+
+                  set_by_lua $api_host 'return os.getenv("API_HOST")';
+                  set_by_lua $api_port 'return os.getenv("API_PORT")';
+
+                  return 200 "http://$api_host:$api_port";
+              }
+      }
