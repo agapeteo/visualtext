@@ -15,9 +15,9 @@ var WEBUI_CONFIG = {
   http: {
     type: "PUT",
     contentType: "application/json",
-    protocol: window.location.protocol == 'file:' ? 'http' : window.location.protocol,
-    host: window.location.protocol == 'file:' ? '192.168.99.100' : window.location.hostname,
-    port: window.location.protocol == 'file:' ? '30397' : window.location.port,
+    protocol: window.location.protocol,
+    host: window.location.hostname,
+    port: window.location.port,
     api_url: '/to-image'
   },
   spinner: {
