@@ -143,6 +143,7 @@ function NetworkTransporter() {
 
   (function() {
     this.send = function(request, callback) {
+      console.log(request);
       $.ajax({
         type: request.type,
         url: request.url,
