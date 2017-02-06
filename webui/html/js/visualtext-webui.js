@@ -121,7 +121,8 @@ function RequestBuilder() {
 
   (function() {
     this.buildUrl = function() {
-      this.request.url = this.protocol + "://" + this.host + ":" + this.port + this.api_url;
+      console.log(this.protocol);
+      this.request.url = this.protocol + "//" + this.host + ":" + this.port + this.api_url;
     };
     this.buildData = function(text) {
       this.request.data = '{"text":"' + text + '", "ignoreCache":false}';
@@ -143,7 +144,6 @@ function NetworkTransporter() {
 
   (function() {
     this.send = function(request, callback) {
-      console.log(request);
       $.ajax({
         type: request.type,
         url: request.url,
