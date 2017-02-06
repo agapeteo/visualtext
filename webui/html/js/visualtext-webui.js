@@ -121,7 +121,6 @@ function RequestBuilder() {
 
   (function() {
     this.buildUrl = function() {
-      console.log(this.protocol);
       this.request.url = this.protocol + "//" + this.host + ":" + this.port + this.api_url;
     };
     this.buildData = function(text) {
