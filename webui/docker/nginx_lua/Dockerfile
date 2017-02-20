@@ -19,9 +19,8 @@ ARG GPG_KEYS=A1EB079B8D3EB92B4EBD3139663AF51BD5E4D8D5
 
 ENV LUAJIT_LIB /usr/local/lib
 ENV LUAJIT_INC /usr/local/include/luajit-2.1
-
-RUN apk update \
- && apk add git
+ENV NGINX_USER nginx
+ENV NGINX_GROUP nginx
 
 RUN \
   build_pkgs="build-base linux-headers pcre-dev curl zlib-dev gnupg geoip-dev libxslt-dev perl-dev gd-dev" \
@@ -101,21 +100,17 @@ RUN \
   && ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log
 
-
 # ***** CLEANUP *****
 EXPOSE 80 443
 
-RUN addgroup -g 40 nginx
-RUN adduser -D -u 501 -g '' -G nginx nginx
+RUN addgroup -g 40 $NGINX_USER
+RUN adduser -D -u 501 -g '' -G $NGINX_GROUP $NGINX_USER
 
 ADD nginx.conf /etc/nginx/conf
 
 RUN mkdir -p /etc/nginx/conf/conf.d
 ADD default.conf /etc/nginx/conf/conf.d
 
-WORKDIR /etc/nginx/html
+WORKDIR /www-data
 
-ADD repo-sync-setup.sh /
-RUN chmod 700 /repo-sync-setup.sh
-
-ENTRYPOINT ["/repo-sync-setup.sh"]
+ENTRYPOINT ["/bin/sh", "-c", "/usr/sbin/nginx -g \"daemon off; user $NGINX_USER $NGINX_GROUP;\""]

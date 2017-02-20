@@ -2,13 +2,13 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: test-nginx
-  name: test-nginx
+    app: visualtext-webui
+  name: visualtext-webui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-nginx
+      app: visualtext-webui
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -17,22 +17,32 @@ spec:
   template:
     metadata:
       labels:
-        app: test-nginx
-      name: test-nginx
+        app: visualtext-webui
+      name: visualtext-webui
     spec:
       containers:
-      - name: test-nginx
-        image: kupolua/webui:0.1
+      - name: sync-repo
+        image: kupolua/sync-repo:0.1
         volumeMounts:
-        - name: config
-          mountPath: /etc/nginx/conf/conf.d
+        - name: www-data
+          mountPath: /www-data
         env:
+        - name: WEBUI_PATH
+          value: "webui/html"
         - name: GIT_REPO_URL
           value: "https://github.com/kupolua/visualtext.git"
         - name: GIT_BRANCH
           value: "master"
         - name: GIT_REPO_SYNC_TIME
           value: "10"
+      - name: nginx-lua
+        image: kupolua/nginx_lua:0.1
+        volumeMounts:
+        - name: www-data
+          mountPath: /www-data
+        - name: config
+          mountPath: /etc/nginx/conf/conf.d
+        env:
         - name: WEBUI_PATH
           value: "webui/html"
         - name: API_HOST
@@ -40,7 +50,9 @@ spec:
         - name: API_PORT
           value: "8080"
       volumes:
+        - name: www-data
+          emptyDir: {}
         - name: config
           configMap:
-            name: test-nginx-config
+            name: visualtext-webui-config
       restartPolicy: Always
