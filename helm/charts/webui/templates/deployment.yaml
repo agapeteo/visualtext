@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
+    type: {{ .Values.strategy.type }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}-{{ .Values.imagereposync.name }}
+        image: "{{ .Values.imagereposync.repository }}:{{ .Values.imagereposync.tag }}"
+        imagePullPolicy: {{ .Values.imagereposync.pullPolicy }}
+        volumeMounts:
+        - name: {{ .Values.volumes.volumename }}
+          mountPath: {{ .Values.volumes.volumepath }}
+        env:
+        - name: WEBUI_PATH
+          value: {{ .Values.env.webuipath }}
+        - name: GIT_REPO_URL
+          value: {{ .Values.env.gitrepourl }}
+        - name: GIT_BRANCH
+          value: {{ .Values.env.gitbranch }}
+        - name: GIT_REPO_SYNC_TIME
+          value: "{{ .Values.env.gitreposynctime }}"
+      - name: {{ .Chart.Name }}-{{ .Values.imagenginxlua.name }}
+        image: "{{ .Values.imagenginxlua.repository }}:{{ .Values.imagenginxlua.tag }}"
+        imagePullPolicy: {{ .Values.imagenginxlua.pullPolicy }}
+        volumeMounts:
+        - name: {{ .Values.volumes.volumename }}
+          mountPath: {{ .Values.volumes.volumepath }}
+        - name: {{ .Values.volumes.configname }}
+          mountPath: {{ .Values.volumes.configpath }}
+        env:
+        - name: WEBUI_PATH
+          value: {{ .Values.env.webuipath }}
+        - name: API_HOST
+          value: {{ .Release.Name }}-{{ .Values.env.webuihost }}
+        - name: API_PORT
+          value: "{{ .Values.env.webuiport }}"
+      volumes:
+        - name: {{ .Values.volumes.volumename }}
+          emptyDir: {}
+        - name: {{ .Values.volumes.configname }}
+          configMap:
+            name: {{ template "fullname" . }}-configmap
+      restartPolicy: {{ .Values.restartPolicy }}

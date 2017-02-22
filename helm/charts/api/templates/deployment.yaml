@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
+    type: {{ .Values.strategy.type }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        env:
+        - name: {{ .Values.image.env.name }}
+          value: {{ .Release.Name }}-{{ .Values.image.env.value }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.image.livenessProbe.path }}
+            port: {{ .Values.image.livenessProbe.port }}
+          initialDelaySeconds: {{ .Values.image.livenessProbe.initialDelaySeconds }}
+          timeoutSeconds: {{ .Values.image.livenessProbe.timeoutSeconds }}
+          periodSeconds: {{ .Values.image.livenessProbe.periodSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.image.readinessProbe.path }}
+            port: {{ .Values.image.readinessProbe.port }}
+          initialDelaySeconds: {{ .Values.image.readinessProbe.initialDelaySeconds }}
+          timeoutSeconds: {{ .Values.image.readinessProbe.timeoutSeconds }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+      restartPolicy: {{ .Values.restartPolicy }}

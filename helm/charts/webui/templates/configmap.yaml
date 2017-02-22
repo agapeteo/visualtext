@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}-configmap
+data:
+  default.conf: |
+    {{ .Values.configmap.defaultconf }}

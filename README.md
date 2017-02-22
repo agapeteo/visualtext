@@ -43,6 +43,16 @@ Use /health endpoint to check if containers ready.
 It may take about 20 seconds if dependent images already exist. 
 `docker-compose down` to stop and remove containers
 
+#Helm usage example
+set environment variable
+`export SSL_CERTIFICATES_LOCAL_LOCATION=/path/to/local/location`
+`export SSL_CERTIFICATES_LOCATION=/path/to/location/within/container`
+
+`export CHART_LOCAL_LOCATION=/path/to/local/location`
+`export CHART_LOCATION=/path/to/location/within/container`
+
+run helm aplication
+`docker run --rm -v ${SSL_CERTIFICATES_LOCAL_LOCATION}:${SSL_CERTIFICATES_LOCATION} -v ${CHART_LOCAL_LOCATION}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
 
 #Kubernetes usage examples
 `kubectl create -f kubernetes`
