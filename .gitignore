@@ -1,5 +1,12 @@
+backup
+webui/docker_alpine
 target/
 !.mvn/wrapper/maven-wrapper.jar
+
+### TESTS ###
+webui/html/tests/acceptance/
+webui/html/tests/functional/
+webui/html/tests/performance/
 
 ### STS ###
 .apt_generated

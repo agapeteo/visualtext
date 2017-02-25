@@ -1,0 +1,56 @@
+replicaCount: 1
+imagereposync:
+  name: sync-repo
+  repository: kupolua/sync-repo
+  tag: 0.1
+  pullPolicy: IfNotPresent
+imagenginxlua:
+  name: nginx-lua
+  repository: kupolua/nginx_lua
+  tag: 0.1
+  pullPolicy: IfNotPresent
+env:
+  webuipath: "webui/html"
+  gitrepourl: "https://github.com/kupolua/visualtext.git"
+  gitbranch: "master"
+  gitreposynctime: "10"
+  webuihost: api.default.svc.cluster.local
+  webuiport: "8080"
+service:
+  name: webui-port
+  type: LoadBalancer
+  externalPort: 80
+  internalPort: 80
+strategy:
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+  type: RollingUpdate
+volumes:
+  volumename: www-data
+  volumepath: /www-data
+  configname: config
+  configpath: /etc/nginx/conf/conf.d
+configmap:
+  defaultconf: |
+    server {
+            listen       80;
+           server_name  localhost;
+
+           location / {
+               set_by_lua_block $webui_path { return os.getenv("WEBUI_PATH") }
+
+               root   /www-data/$webui_path;
+               index  index.html index.htm;
+           }
+
+           location /to-image {
+               resolver 10.3.0.10 valid=30s;
+
+               set_by_lua_block $api_host { return os.getenv("API_HOST") }
+               set_by_lua_block $api_port { return os.getenv("API_PORT") }
+
+               proxy_pass http://$api_host:$api_port;
+           }
+        }
+restartPolicy: Always

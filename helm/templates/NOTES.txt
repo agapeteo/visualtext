@@ -1,0 +1,5 @@
+Get the application PORT by running these command:
+  kubectl get --namespace {{ .Release.Namespace }} -o jsonpath={.spec.ports[0].nodePort} services {{ .Release.Name }}-webui
+
+Remove the application by running these command:
+  helm delete {{ .Release.Name }}

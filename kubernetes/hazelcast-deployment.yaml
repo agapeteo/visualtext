@@ -27,5 +27,8 @@ spec:
         - name: ZOOKEEPER_URL
           value: zookeeper:2181
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: 250Mi
+            cpu: 250m
       restartPolicy: Always
-
