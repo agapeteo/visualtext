@@ -15,9 +15,11 @@ creates gif file for requested word
 `curl -X PUT -H "Accept: application/json" -H "Content-type: application/json" -d '{"text":"yo man", "ignoreCache":false}' http://${HOST}:${PORT}/to-image`
 returns result in JSON for requested text (image for each word in text)
 
+
 #Request schema
 - String text
 - boolean ignoreCache
+
 
 #Response schema
  (JSON array of)
@@ -43,16 +45,17 @@ Use /health endpoint to check if containers ready.
 It may take about 20 seconds if dependent images already exist. 
 `docker-compose down` to stop and remove containers
 
+
 #Helm usage example
-set environment variable
-`export SSL_CERTIFICATES_LOCAL_LOCATION=/path/to/local/location`
-`export SSL_CERTIFICATES_LOCATION=/path/to/location/within/container`
+'.kube' folder should be contain kubectl config file 'config' and 'ssl' folder contain authority files for client access to a running Kubernetes cluster <br /> 
+`export KUBE_LOCAL=/path/to/local/location` <br />
 
-`export CHART_LOCAL_LOCATION=/path/to/local/location`
-`export CHART_LOCATION=/path/to/location/within/container`
+`export CHART_LOCAL=/path/to/local/location` <br />
+`export CHART_LOCATION=/home` <br /> 
 
-run helm aplication
-`docker run --rm -v ${SSL_CERTIFICATES_LOCAL_LOCATION}:${SSL_CERTIFICATES_LOCATION} -v ${CHART_LOCAL_LOCATION}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
+run helm aplication <br />
+`docker run --rm -v ${KUBE_LOCAL}:/root/.kube -v ${CHART_LOCAL}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
+
 
 #Kubernetes usage examples
 `kubectl create -f kubernetes`
@@ -66,7 +69,6 @@ get autoscalers and watch for changes
 
 `kubectl scale --current-replicas=2 --replicas=3 deployment/hazelcast`
 scale hazelcast deployment
-
 
 
 #Libraries and frameworks used
