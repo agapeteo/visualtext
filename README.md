@@ -15,9 +15,11 @@ creates gif file for requested word
 `curl -X PUT -H "Accept: application/json" -H "Content-type: application/json" -d '{"text":"yo man", "ignoreCache":false}' http://${HOST}:${PORT}/to-image`
 returns result in JSON for requested text (image for each word in text)
 
+
 #Request schema
 - String text
 - boolean ignoreCache
+
 
 #Response schema
  (JSON array of)
@@ -54,6 +56,17 @@ set environment variable
 run helm aplication
 `docker run --rm -v ${SSL_CERTIFICATES_LOCAL_LOCATION}:${SSL_CERTIFICATES_LOCATION} -v ${CHART_LOCAL_LOCATION}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
 
+#Helm usage example
+'.kube' folder should be contain kubectl config file 'config' and 'ssl' folder contain authority files for client access to a running Kubernetes cluster <br /> 
+`export KUBE_LOCAL=/path/to/local/location` <br />
+
+`export CHART_LOCAL=/path/to/local/location` <br />
+`export CHART_LOCATION=/home` <br /> 
+
+run helm aplication <br />
+`docker run --rm -v ${KUBE_LOCAL}:/root/.kube -v ${CHART_LOCAL}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
+
+
 #Kubernetes usage examples
 `kubectl create -f kubernetes`
 create all deployments, services and hpa
@@ -66,7 +79,6 @@ get autoscalers and watch for changes
 
 `kubectl scale --current-replicas=2 --replicas=3 deployment/hazelcast`
 scale hazelcast deployment
-
 
 
 #Libraries and frameworks used

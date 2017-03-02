@@ -17,8 +17,4 @@ RUN \
   && rm -rf linux-amd64 \
   && apk add --update bash && rm -rf /var/cache/apk/* \
   && apk --no-cache del ${build_pkgs} \
-  && apk --no-cache add ${runtime_pkgs} \
-  && mkdir /root/.kube \
-  && mkdir /root/.kube/ssl
-
-ADD config /root/.kube
+  && apk --no-cache add ${runtime_pkgs}
