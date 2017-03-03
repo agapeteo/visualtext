@@ -57,7 +57,7 @@ It may take about 20 seconds if dependent images already exist.
 Для подключения к kubernetes cloud необходимо указать расположение файла config  <br /> 
 `export KUBE_LOCAL=~/.kube/` <br />
 
-Расположение файлов сертификатов указано в файле ~/.kube/config или если вы используете minikube:
+Расположение файлов сертификатов указано в файле ~/.kube/config или если вы используете minikube: <br /> 
 `export SSL_LOCATION=~/.minikube/`
 
 run helm aplication <br />
