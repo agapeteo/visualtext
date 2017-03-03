@@ -64,8 +64,7 @@ run helm aplication
 `export CHART_LOCATION=/home` <br /> 
 
 run helm aplication <br />
-`docker run --rm -v ${KUBE_LOCAL}:/root/.kube -v ${CHART_LOCAL}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
-
+`docker run --rm -v ${KUBE_LOCAL}:/root/.kube -v ${CHART_LOCAL}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} kupolua/helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
 
 #Kubernetes usage examples
 `kubectl create -f kubernetes`
