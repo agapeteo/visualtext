@@ -18,3 +18,7 @@ RUN \
   && apk add --update bash && rm -rf /var/cache/apk/* \
   && apk --no-cache del ${build_pkgs} \
   && apk --no-cache add ${runtime_pkgs}
+
+ENV CHART_LOCATION=/opt/helm
+
+CMD /usr/local/bin/helm init && /usr/local/bin/helm install ${CHART_LOCATION}

@@ -14,6 +14,7 @@ env:
   gitrepourl: "https://github.com/kupolua/visualtext.git"
   gitbranch: "master"
   gitreposynctime: "10"
+  resolver: "10.3.0.10"
   webuihost: api.default.svc.cluster.local
   webuiport: "8080"
 service:
@@ -45,7 +46,8 @@ configmap:
            }
 
            location /to-image {
-               resolver 10.3.0.10 valid=30s;
+               set_by_lua_block $resolver { return os.getenv("RESOLVER") }
+               resolver $resolver valid=30s;
 
                set_by_lua_block $api_host { return os.getenv("API_HOST") }
                set_by_lua_block $api_port { return os.getenv("API_PORT") }
