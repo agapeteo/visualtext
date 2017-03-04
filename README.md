@@ -47,21 +47,23 @@ It may take about 20 seconds if dependent images already exist.
 
 
 #Helm usage example
-Загрузите helm charts <br />
-`mkdir helm-example` <br />
-`cd helm-example` <br />
-`git clone https://github.com/agapeteo/visualtext.git` <br />
-`export CHART_LOCAL=${PWD}/visualtext/helm/` <br />
-`export CHART_LOCATION=/home` <br />
+Загрузите helm charts:
+``` 
+    mkdir helm-example
+    cd helm-example
+    git clone https://github.com/agapeteo/visualtext.git
+    export CHART_LOCAL=${PWD}/visualtext/helm/
+    export CHART_LOCATION=/opt/helm
+```
  
-Для подключения к kubernetes cloud необходимо указать расположение файла config  <br /> 
-`export KUBE_LOCAL=~/.kube/` <br />
+Для подключения к kubernetes cloud необходимо указать расположение файла config 
+```export KUBE_LOCAL=~/.kube/```
 
-Расположение файлов сертификатов указано в файле ~/.kube/config или если вы используете minikube: <br /> 
-`export SSL_LOCATION=~/.minikube/`
+Расположение файлов сертификатов указано в файле ~/.kube/config или если вы используете minikube: 
+```export SSL_LOCATION=~/.minikube/```
 
-run helm aplication <br />
-`docker run --rm -v ${KUBE_LOCAL}:/root/.kube -v ${SSL_LOCATION}:${SSL_LOCATION} -v ${CHART_LOCAL}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} kupolua/helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
+run helm aplication
+```docker run --rm -v ${KUBE_LOCAL}:/root/.kube -v ${SSL_LOCATION}:${SSL_LOCATION} -v ${CHART_LOCAL}:${CHART_LOCATION} kupolua/helm```
 
 
 #Kubernetes usage examples
