@@ -83,9 +83,6 @@ docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm ins
 
 
 #Kubernetes usage examples
-`kubectl create -f kubernetes`
-create all deployments, services and hpa
-
 `kubectl get po -w`
 get list of pods and watch for changes
 
