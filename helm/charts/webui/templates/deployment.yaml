@@ -46,6 +46,8 @@ spec:
         env:
         - name: WEBUI_PATH
           value: {{ .Values.env.webuipath }}
+        - name: RESOLVER
+          value: {{ .Values.env.resolver }}
         - name: API_HOST
           value: {{ .Release.Name }}-{{ .Values.env.webuihost }}
         - name: API_PORT
