@@ -46,25 +46,41 @@ It may take about 20 seconds if dependent images already exist.
 `docker-compose down` to stop and remove containers
 
 #Helm usage example
-set environment variable
-`export SSL_CERTIFICATES_LOCAL_LOCATION=/path/to/local/location`
-`export SSL_CERTIFICATES_LOCATION=/path/to/location/within/container`
+####If ``helm`` is installed locally        
+```
+git clone https://github.com/agapeteo/visualtext.git 
+cd visualtext/helm/
+helm init
+helm install .
+```
 
-`export CHART_LOCAL_LOCATION=/path/to/local/location`
-`export CHART_LOCATION=/path/to/location/within/container`
+#### Using helm as Docker container, Kubernetes config file and keys in separate location (like with minikube)
+```
+git clone https://github.com/agapeteo/visualtext.git 
+cd visualtext/helm/
+export KUBE_KEYS_LOCATION=~/.minikube/
+docker run --rm -v ~/.kube:/root/.kube -v ${KUBE_KEYS_LOCATION}:${KUBE_KEYS_LOCATION} -v $(pwd):/opt/helm kupolua/helm helm init
+docker run --rm -v ~/.kube:/root/.kube -v ${KUBE_KEYS_LOCATION}:${KUBE_KEYS_LOCATION} -v $(pwd):/opt/helm kupolua/helm helm install /opt/helm
+```
 
-run helm aplication
-`docker run --rm -v ${SSL_CERTIFICATES_LOCAL_LOCATION}:${SSL_CERTIFICATES_LOCATION} -v ${CHART_LOCAL_LOCATION}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
+#### Using helm as Docker container, Kubernetes config file and keys in the sane config file
+```
+git clone https://github.com/agapeteo/visualtext.git 
+cd visualtext/helm/
+docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm init
+docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm install /opt/helm 
+```
 
-#Helm usage example
-'.kube' folder should be contain kubectl config file 'config' and 'ssl' folder contain authority files for client access to a running Kubernetes cluster <br /> 
-`export KUBE_LOCAL=/path/to/local/location` <br />
+If Kubernetes internal DNS is not `10.0.0.10`, you can specify your own with 
+``` 
+--set webui.env.resolver=${YOUR_KUBE_DNS_IP} 
+```
 
-`export CHART_LOCAL=/path/to/local/location` <br />
-`export CHART_LOCATION=/home` <br /> 
+Example:
+```
+docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm install /opt/helm --set webui.env.resolver=10.3.0.10
+```
 
-run helm aplication <br />
-`docker run --rm -v ${KUBE_LOCAL}:/root/.kube -v ${CHART_LOCAL}:${CHART_LOCATION} -e CHART_LOCATION=${CHART_LOCATION} kupolua/helm /bin/bash -c "helm init; helm install ${CHART_LOCATION}"`
 
 #Kubernetes usage examples
 `kubectl create -f kubernetes`
