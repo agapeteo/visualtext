@@ -16,11 +16,5 @@ then
     git checkout ${GIT_BRANCH}
 fi
 
-i=1
-while [ ${i} ];
-do
-    git fetch
-    git pull origin ${GIT_BRANCH}
-
-    sleep ${GIT_REPO_SYNC_TIME}
-done
+git fetch
+git pull origin ${GIT_BRANCH}
