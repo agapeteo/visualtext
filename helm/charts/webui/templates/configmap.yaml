@@ -4,4 +4,23 @@ metadata:
   name: {{ template "fullname" . }}-configmap
 data:
   default.conf: |
-    {{ .Values.configmap.defaultconf }}
+    server {
+            listen       80;
+           server_name  localhost;
+
+           location / {
+               set_by_lua_block $webui_path { return os.getenv("WEBUI_PATH") }
+
+               root   /www-data/$webui_path;
+               index  index.html index.htm;
+           }
+
+           location /to-image {
+               resolver {{ .Values.env.resolver }} valid=30s;
+
+               set_by_lua_block $api_host { return os.getenv("API_HOST") }
+               set_by_lua_block $api_port { return os.getenv("API_PORT") }
+
+               proxy_pass http://$api_host:$api_port;
+           }
+        }

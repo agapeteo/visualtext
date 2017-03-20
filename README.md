@@ -45,7 +45,6 @@ Use /health endpoint to check if containers ready.
 It may take about 20 seconds if dependent images already exist. 
 `docker-compose down` to stop and remove containers
 
-
 #Helm usage example
 Загрузите helm charts:
 ``` 
@@ -67,9 +66,6 @@ run helm aplication
 
 
 #Kubernetes usage examples
-`kubectl create -f kubernetes`
-create all deployments, services and hpa
-
 `kubectl get po -w`
 get list of pods and watch for changes
 

@@ -1,14 +1,13 @@
-replicaCount: 1
-strategy:
-  rollingUpdate:
-    maxSurge: 1
-    maxUnavailable: 1
-  type: RollingUpdate
-image:
-  repository: zookeeper
-service:
-  name: zookeeper-port
-  type: ClusterIP
-  externalPort: 2181
-  internalPort: 2181
-restartPolicy: Always
+Servers: 3
+ServerPort: 2888
+LeaderElectionPort: 3888
+ClientPort: 2181
+TickTimeMs: 2000
+InitTicks: 10
+SyncTicks: 5
+ClientCnxns: 60
+SnapRetain: 3
+PurgeHours: 1
+ProbeInitialDelaySeconds : 15
+ProbeTimeoutSeconds : 5
+LogLevel : "DEBUG"

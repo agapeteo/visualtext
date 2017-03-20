@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 3
 strategy:
   rollingUpdate:
     maxSurge: 1
@@ -33,6 +33,6 @@ resources:
     memory: 250Mi
 restartPolicy: Always
 hpa:
-  maxReplicas: 5
-  minReplicas: 1
+  maxReplicas: 7
+  minReplicas: 2
   targetCPUUtilizationPercentage: 60

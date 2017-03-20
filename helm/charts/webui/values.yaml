@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 3
 imagereposync:
   name: sync-repo
   repository: kupolua/sync-repo
@@ -17,6 +17,7 @@ env:
   resolver: "10.3.0.10"
   webuihost: api.default.svc.cluster.local
   webuiport: "8080"
+  resolver: "10.0.0.10"
 service:
   name: webui-port
   type: LoadBalancer
