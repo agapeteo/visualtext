@@ -2,7 +2,7 @@ replicaCount: 3
 imagereposync:
   name: sync-repo
   repository: kupolua/sync-repo
-  tag: 0.1
+  tag: latest
   pullPolicy: IfNotPresent
 imagenginxlua:
   name: nginx-lua
@@ -11,7 +11,7 @@ imagenginxlua:
   pullPolicy: IfNotPresent
 env:
   webuipath: "webui/html"
-  gitrepourl: "https://github.com/kupolua/visualtext.git"
+  gitrepourl: "https://github.com/agapeteo/visualtext.git"
   gitbranch: "master"
   gitreposynctime: "10"
   resolver: "10.3.0.10"
