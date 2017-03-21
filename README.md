@@ -46,40 +46,23 @@ It may take about 20 seconds if dependent images already exist.
 `docker-compose down` to stop and remove containers
 
 #Helm usage example
-####If ``helm`` is installed locally        
-```
-git clone https://github.com/agapeteo/visualtext.git 
-cd visualtext/helm/
-helm init
-helm install .
-```
-
-#### Using helm as Docker container, Kubernetes config file and keys in separate location (like with minikube)
-```
-git clone https://github.com/agapeteo/visualtext.git 
-cd visualtext/helm/
-export KUBE_KEYS_LOCATION=~/.minikube/
-docker run --rm -v ~/.kube:/root/.kube -v ${KUBE_KEYS_LOCATION}:${KUBE_KEYS_LOCATION} -v $(pwd):/opt/helm kupolua/helm helm init
-docker run --rm -v ~/.kube:/root/.kube -v ${KUBE_KEYS_LOCATION}:${KUBE_KEYS_LOCATION} -v $(pwd):/opt/helm kupolua/helm helm install /opt/helm
-```
-
-#### Using helm as Docker container, Kubernetes config file and keys in the sane config file
-```
-git clone https://github.com/agapeteo/visualtext.git 
-cd visualtext/helm/
-docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm init
-docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm install /opt/helm 
-```
-
-If Kubernetes internal DNS is not `10.0.0.10`, you can specify your own with 
+Загрузите helm charts:
 ``` 
---set webui.env.resolver=${YOUR_KUBE_DNS_IP} 
+    mkdir helm-example
+    cd helm-example
+    git clone https://github.com/agapeteo/visualtext.git
+    export CHART_LOCAL=${PWD}/visualtext/helm/
+    export CHART_LOCATION=/opt/helm
 ```
+ 
+Для подключения к kubernetes cloud необходимо указать расположение файла config 
+```export KUBE_LOCAL=~/.kube/```
 
-Example:
-```
-docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm install /opt/helm --set webui.env.resolver=10.3.0.10
-```
+Расположение файлов сертификатов указано в файле ~/.kube/config или если вы используете minikube: 
+```export SSL_LOCATION=~/.minikube/```
+
+run helm aplication
+```docker run --rm -v ${KUBE_LOCAL}:/root/.kube -v ${SSL_LOCATION}:${SSL_LOCATION} -v ${CHART_LOCAL}:${CHART_LOCATION} kupolua/helm```
 
 
 #Kubernetes usage examples

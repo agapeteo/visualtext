@@ -2,7 +2,7 @@ replicaCount: 3
 imagereposync:
   name: sync-repo
   repository: kupolua/sync-repo
-  tag: 0.1
+  tag: latest
   pullPolicy: IfNotPresent
 imagenginxlua:
   name: nginx-lua
@@ -11,9 +11,10 @@ imagenginxlua:
   pullPolicy: IfNotPresent
 env:
   webuipath: "webui/html"
-  gitrepourl: "https://github.com/kupolua/visualtext.git"
+  gitrepourl: "https://github.com/agapeteo/visualtext.git"
   gitbranch: "master"
   gitreposynctime: "10"
+  resolver: "10.3.0.10"
   webuihost: api.default.svc.cluster.local
   webuiport: "8080"
   resolver: "10.0.0.10"
@@ -32,4 +33,27 @@ volumes:
   volumepath: /www-data
   configname: config
   configpath: /etc/nginx/conf/conf.d
+configmap:
+  defaultconf: |
+    server {
+            listen       80;
+           server_name  localhost;
+
+           location / {
+               set_by_lua_block $webui_path { return os.getenv("WEBUI_PATH") }
+
+               root   /www-data/$webui_path;
+               index  index.html index.htm;
+           }
+
+           location /to-image {
+               set_by_lua_block $resolver { return os.getenv("RESOLVER") }
+               resolver $resolver valid=30s;
+
+               set_by_lua_block $api_host { return os.getenv("API_HOST") }
+               set_by_lua_block $api_port { return os.getenv("API_PORT") }
+
+               proxy_pass http://$api_host:$api_port;
+           }
+        }
 restartPolicy: Always
