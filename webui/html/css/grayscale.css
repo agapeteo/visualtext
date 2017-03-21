@@ -293,16 +293,16 @@ footer {
 footer p {
   margin: 0;
 }
-::-moz-selection {
-  text-shadow: none;
-  background: #fcfcfc;
-  background: rgba(255, 255, 255, 0.2);
-}
-::selection {
-  text-shadow: none;
-  background: #fcfcfc;
-  background: rgba(255, 255, 255, 0.2);
-}
+/*::-moz-selection {*/
+  /*text-shadow: none;*/
+  /*background: #fc0e18;*/
+  /*background: rgba(255, 255, 255, 0.2);*/
+/*}*/
+/*::selection {*/
+  /*text-shadow: none;*/
+  /*background: #fcfcfc;*/
+  /*background: rgba(255, 255, 255, 0.2);*/
+/*}*/
 img::selection {
   background: transparent;
 }
@@ -328,4 +328,11 @@ body {
   color: white;
   -webkit-filter: invert(100%);
   filter: invert(100%);
+}
+#reset-button {
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color: #434343;
+  position: relative;
+  left: 40%;
 }

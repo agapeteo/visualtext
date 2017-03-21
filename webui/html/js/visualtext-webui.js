@@ -4,7 +4,7 @@ var WEBUI_CONFIG = {
   html: {
     searchButtonID: 'searchButton',
     searchElementID: 'searchText',
-    regex: '/\n/g',
+    regex: /(?:\r\n|\r|\n)/ig,
     pattern: ' ',
     exceptionID: 'exception',
     exceptionMessage: 'Request is empty or could not get data from ',
@@ -268,10 +268,8 @@ function VisualTextController() {
 
       return this;
     };
-    this.clearUI = function() {
+    this.clearImgContainer = function() {
       $("#picturesGallery div").remove();
-      var searchRequest = document.getElementById("searchText");
-      searchRequest.value = '';
 
       $(".exception").html('');
 
@@ -282,11 +280,21 @@ function VisualTextController() {
           .getText()
           .getRequest()
           .sendRequest()
-          .clearUI();
+          .clearImgContainer();
 
       return this
     }
   }).call(VisualTextController.prototype);
+}
+
+function UICleaner() {
+    this.run = function () {
+        $("#picturesGallery div").remove();
+        var searchRequest = document.getElementById("searchText");
+        searchRequest.value = '';
+
+        $(".exception").html('');
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -296,6 +304,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var publisher = new HTMLResponseBuilder();
   var clickListener = new BaseListener();
   var visualTextController = new VisualTextController();
+  var uiCleaner = new UICleaner();
 
   visualTextController
       .setTextHandler(textHandler)
@@ -307,5 +316,10 @@ document.addEventListener("DOMContentLoaded", function() {
       .setTarget(document.getElementById('searchButton'))
       .setType('click')
       .setCallback(visualTextController)
+      .add();
+  clickListener
+      .setTarget(document.getElementById('reset-button'))
+      .setType('click')
+      .setCallback(uiCleaner)
       .add();
 });
