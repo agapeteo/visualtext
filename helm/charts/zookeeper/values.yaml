@@ -11,3 +11,8 @@ PurgeHours: 1
 ProbeInitialDelaySeconds : 15
 ProbeTimeoutSeconds : 5
 LogLevel : "DEBUG"
+resources:
+  requests:
+    cpu: 250m
+    memory: 250Mi
+restartPolicy: Always
