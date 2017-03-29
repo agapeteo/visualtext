@@ -12,6 +12,9 @@ ProbeInitialDelaySeconds : 15
 ProbeTimeoutSeconds : 5
 LogLevel : "DEBUG"
 resources:
+  limits:
+    cpu: 100m
+    memory: 100Mi
   requests:
     cpu: 250m
     memory: 250Mi
