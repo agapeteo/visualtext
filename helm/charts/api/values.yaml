@@ -28,6 +28,9 @@ service:
   externalPort: 8080
   internalPort: 8080
 resources:
+  limits:
+    cpu: 100m
+    memory: 100Mi
   requests:
     cpu: 250m
     memory: 250Mi

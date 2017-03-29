@@ -94,6 +94,8 @@ spec:
             - "zkOk.sh"
           initialDelaySeconds: {{.Values.ProbeInitialDelaySeconds}}
           timeoutSeconds: {{.Values.ProbeTimeoutSeconds}}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
