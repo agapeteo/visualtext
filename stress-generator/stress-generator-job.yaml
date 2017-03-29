@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: stress-generator
+spec:
+  template:
+    metadata:
+      name: stress-generator
+    spec:
+      containers:
+      - name: stress-generator
+        image: kupolua/stress-generator
+        env:
+        - name: HOST
+          value: ""
+        - name: PORT
+          value: ""
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 512m
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 250Mi
+      restartPolicy: Never
