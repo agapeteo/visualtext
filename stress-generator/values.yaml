@@ -1,0 +1,19 @@
+image:
+  repository: kupolua/stress-generator
+  tag: latest
+  env:
+    hostname: HOST
+    hostvalue: stress-demo-api.default.svc.cluster.local
+    portname: PORT
+    portvalue: 8080
+  pullPolicy: IfNotPresent
+resources:
+  limits:
+    cpu: 512m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+restartPolicy: Never
+
+
