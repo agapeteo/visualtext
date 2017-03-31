@@ -1,0 +1,5 @@
+1. Get the benchmark results these command:
+    kubectl get po -a | grep stress-generator | awk -F' '  '{printf $1"\n"; system("kubectl logs "$1); printf"\n"}'
+
+2. Remove all stress-generator jobs these command:
+    helm list | grep stress-generator | awk -F' ' 'system("helm delete "$1)'
