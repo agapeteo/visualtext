@@ -14,8 +14,8 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         env:
-        - name: {{ .Values.image.env.hostname }}
-          value: "{{ .Values.image.env.hostvalue }}"
+        - name: {{ .Values.image.env.host.name }}
+          value: "{{ .Values.image.env.host.deployment }}-{{ .Values.image.env.host.apiservice }}"
         - name: {{ .Values.image.env.portname }}
           value: "{{ .Values.image.env.portvalue }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}

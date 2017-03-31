@@ -2,8 +2,10 @@ image:
   repository: kupolua/stress-generator
   tag: latest
   env:
-    hostname: HOST
-    hostvalue: stress-demo-api.default.svc.cluster.local
+    host:
+      name: HOST
+      deployment: demo
+      apiservice: api
     portname: PORT
     portvalue: 8080
   pullPolicy: IfNotPresent

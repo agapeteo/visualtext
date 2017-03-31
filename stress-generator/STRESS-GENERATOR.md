@@ -2,15 +2,14 @@
 
 #### SET api HOST enviroment:
 ```
-export API_HOST=`kubectl get svc | grep api | awk -F' ' '{print $1}'`
+export DEPLOYMENT=`kubectl get svc | grep api | awk -F'-' '{print $1"-"$2}'`
 ```
 
-####If ``helm`` is installed locally        
+#### If ``helm`` is installed locally        
 ```
 git clone https://github.com/agapeteo/visualtext.git 
 cd visualtext/stress-generator/
-helm init
-helm install --set image.env.hostvalue=${API_HOST} .
+helm install --set image.env.host.deployment=${DEPLOYMENT} .
 ```
 
 #### Using helm as Docker container, Kubernetes config file and keys in separate location (like with minikube)
@@ -19,7 +18,7 @@ git clone https://github.com/agapeteo/visualtext.git
 cd visualtext/stress-generator/
 export KUBE_KEYS_LOCATION=~/.minikube/
 docker run --rm -v ~/.kube:/root/.kube -v ${KUBE_KEYS_LOCATION}:${KUBE_KEYS_LOCATION} -v $(pwd):/opt/helm kupolua/helm helm init
-docker run --rm -v ~/.kube:/root/.kube -v ${KUBE_KEYS_LOCATION}:${KUBE_KEYS_LOCATION} -v $(pwd):/opt/helm kupolua/helm helm install --set image.env.hostvalue=${API_HOST} /opt/helm
+docker run --rm -v ~/.kube:/root/.kube -v ${KUBE_KEYS_LOCATION}:${KUBE_KEYS_LOCATION} -v $(pwd):/opt/helm kupolua/helm helm install --set image.env.host.deployment=${DEPLOYMENT} /opt/helm
 ```
 
 #### Using helm as Docker container, Kubernetes config file and keys in the sane config file
@@ -27,7 +26,7 @@ docker run --rm -v ~/.kube:/root/.kube -v ${KUBE_KEYS_LOCATION}:${KUBE_KEYS_LOCA
 git clone https://github.com/agapeteo/visualtext.git 
 cd visualtext/helm/
 docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm init
-docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm install --set image.env.hostvalue=${API_HOST} /opt/helm 
+docker run --rm -v ~/.kube:/root/.kube -v $(pwd):/opt/helm kupolua/helm helm install --set image.env.host.deployment=${DEPLOYMENT} /opt/helm 
 ```
 
 #### Get the benchmark results these command:
