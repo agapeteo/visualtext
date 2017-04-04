@@ -3,6 +3,9 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+
+* { box-sizing: border-box; }
+
 body {
   width: 100%;
   height: 100%;
@@ -13,6 +16,7 @@ body {
 html {
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
 }
 h1,
 h2,
@@ -53,6 +57,7 @@ a:focus {
   font-weight: 400;
 }
 .navbar-custom {
+  visibility: hidden;
   margin-bottom: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   text-transform: uppercase;
@@ -69,6 +74,7 @@ a:focus {
   outline: none;
 }
 .navbar-custom .navbar-brand {
+  font-size: 12px;
   font-weight: 700;
 }
 .navbar-custom .navbar-brand:focus {
@@ -112,7 +118,8 @@ a:focus {
     transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;
   }
   .navbar-custom.top-nav-collapse {
-    padding: 0;
+    visibility: visible;
+    padding: 0px;
     background: black;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   }
@@ -238,7 +245,7 @@ a:focus {
 }
 @media (min-width: 767px) {
   .content-section {
-    padding-top: 250px;
+    padding-top: 50px;
   }
   .download-section {
     padding: 100px 0;
@@ -326,13 +333,18 @@ body {
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 400;
   color: white;
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
+  /*-webkit-filter: invert(100%);*/
+  /*filter: invert(100%);*/
 }
 #reset-button {
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 400;
   color: #434343;
-  position: relative;
-  left: 40%;
+  float: left;
+  /*position: inherit;*/
+  /*left: -100%;*/
+}
+.exception {
+  padding-top: 30px;
+  font-size: 1.5em;
 }
