@@ -18,23 +18,36 @@ spec:
     metadata:
       labels:
         app: {{ template "fullname" . }}
+      annotations:
+        pod.beta.kubernetes.io/init-containers: '[
+            {
+                "name": "{{ .Chart.Name }}-{{ .Values.imagereposync.name }}",
+                "image": "{{ .Values.imagereposync.repository }}:{{ .Values.imagereposync.tag }}",
+                "imagePullPolicy": "{{ .Values.imagereposync.pullPolicy }}",
+                "volumeMounts": [
+                  {
+                    "name": "{{ .Values.volumes.volumename }}",
+                    "mountPath": "{{ .Values.volumes.volumepath }}"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "WEBUI_PATH",
+                    "value": "{{ .Values.env.webuipath }}"
+                  },
+                  {
+                    "name": "GIT_REPO_URL",
+                    "value": "{{ .Values.env.gitrepourl }}"
+                  },
+                  {
+                    "name": "GIT_BRANCH",
+                    "value": "{{ .Values.env.gitbranch }}"
+                  }
+                ]
+            }
+        ]'
     spec:
       containers:
-      - name: {{ .Chart.Name }}-{{ .Values.imagereposync.name }}
-        image: "{{ .Values.imagereposync.repository }}:{{ .Values.imagereposync.tag }}"
-        imagePullPolicy: {{ .Values.imagereposync.pullPolicy }}
-        volumeMounts:
-        - name: {{ .Values.volumes.volumename }}
-          mountPath: {{ .Values.volumes.volumepath }}
-        env:
-        - name: WEBUI_PATH
-          value: {{ .Values.env.webuipath }}
-        - name: GIT_REPO_URL
-          value: {{ .Values.env.gitrepourl }}
-        - name: GIT_BRANCH
-          value: {{ .Values.env.gitbranch }}
-        - name: GIT_REPO_SYNC_TIME
-          value: "{{ .Values.env.gitreposynctime }}"
       - name: {{ .Chart.Name }}-{{ .Values.imagenginxlua.name }}
         image: "{{ .Values.imagenginxlua.repository }}:{{ .Values.imagenginxlua.tag }}"
         imagePullPolicy: {{ .Values.imagenginxlua.pullPolicy }}
