@@ -172,14 +172,14 @@ function NetworkTransporter() {
 
 function HTMLResponseBuilder() {
     var buildImgTag = function(response, key, index) {
-        $("#" +index + " div .caption").text(response[key]['word']);
+        $("#" + index + " .caption").text(response[key]['word']);
 
         if (response[key]['image'] === null) {
-            $("#" +index + " div img").remove();
-            $("<i class=\"fa fa-question-circle-o fa-7\" aria-hidden=\"true\" id=\"unknownWord\"></i>").insertBefore("#" +index + " .caption");
+            $("#" + index + " img").remove();
+            $("<i class=\"fa fa-question-circle-o fa-7\" aria-hidden=\"true\" id=\"unknownWord\"></i>").insertBefore("#" + index + " .caption");
             $("#unknownWord").css("font", "normal normal normal 50px/1 FontAwesome");
         } else {
-            $("#" +index + " div img").attr("src", "data:image/gif;base64," + response[key]['image']);
+            $("#" + index + " img").attr("src", "data:image/gif;base64," + response[key]['image']);
         }
     };
     var scrollToID = function(id, speed){
@@ -191,10 +191,24 @@ function HTMLResponseBuilder() {
     };
     (function() {
         this.publish = function(response) {
+            $(".grid-sizer").clone().appendTo("#picturesGallery");
+
             if (typeof response === 'object') {
                 Object.keys(response).map(function(key, index) {
                     $("#thumbnailCard").clone().appendTo("#picturesGallery").attr("id", index);
                     buildImgTag(response, key, index);
+                });
+
+                var grid = document.querySelector('.grid');
+
+                var msnry = new Masonry( grid, {
+                    itemSelector: '.grid-item',
+                    columnWidth: '.grid-sizer',
+                    percentPosition: true
+                });
+
+                imagesLoaded( grid ).on( 'progress', function() {
+                    msnry.layout();
                 });
 
                 scrollToID('#picturesGallery', 2000);
