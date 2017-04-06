@@ -43,6 +43,11 @@ var WEBUI_CONFIG = {
     }
 };
 
+var spinner;
+var spinnerOpts = WEBUI_CONFIG.spinner.spinnerOpts;
+var spinnerTargetAnchorID = WEBUI_CONFIG.spinner.spinnerAnchorID;
+var spinnerTargetAnchor = document.getElementById(spinnerTargetAnchorID);
+
 function BaseListener() {
     this.target = '';
     this.type = '';
@@ -136,11 +141,6 @@ function RequestBuilder() {
 }
 
 function NetworkTransporter() {
-    var spinner;
-    var spinnerOpts = WEBUI_CONFIG.spinner.spinnerOpts;
-    var spinnerTargetAnchorID = WEBUI_CONFIG.spinner.spinnerAnchorID;
-    var spinnerTargetAnchor = document.getElementById(spinnerTargetAnchorID);
-
     (function() {
         this.send = function(request, callback) {
             $.ajax({
@@ -152,7 +152,6 @@ function NetworkTransporter() {
                     spinner = new Spinner(spinnerOpts).spin(spinnerTargetAnchor);
                 },
                 complete: function(){
-                    spinner.stop(spinnerTargetAnchor);
                 },
                 error: function(){
                     var exceptionMessage = WEBUI_CONFIG.html.exceptionMessage + request.url;
@@ -187,7 +186,9 @@ function HTMLResponseBuilder() {
         var targetOffset = $(id).offset().top - offSet;
         $('html,body').animate({
             scrollTop:targetOffset
-        }, speed);
+        }, speed, function() {
+            spinner.stop(spinnerTargetAnchor);
+        });
     };
     (function() {
         this.publish = function(response) {
@@ -195,21 +196,15 @@ function HTMLResponseBuilder() {
 
             if (typeof response === 'object') {
                 Object.keys(response).map(function(key, index) {
-                    $("#thumbnailCard").clone().appendTo("#picturesGallery").attr("id", index);
+                    $("#defaut-template").clone().appendTo("#picturesGallery").attr("id", index);
                     buildImgTag(response, key, index);
                 });
 
-                var grid = document.querySelector('.grid');
-
-                var msnry = new Masonry( grid, {
-                    itemSelector: '.grid-item',
-                    columnWidth: '.grid-sizer',
-                    percentPosition: true
-                });
-
-                imagesLoaded( grid ).on( 'progress', function() {
-                    msnry.layout();
-                });
+                new AnimOnScroll( document.querySelector('.grid'), {
+                    minDuration : 0.4,
+                    maxDuration : 0.7,
+                    viewportFactor : 0.2
+                } );
 
                 scrollToID('#picturesGallery', 2000);
             } else {
@@ -303,7 +298,11 @@ function VisualTextController() {
 
 function UICleaner() {
     this.run = function () {
-        $("#picturesGallery div").remove();
+        $('html,body').animate({
+            scrollTop: 0
+        }, 200);
+        $("#picturesGallery li").remove();
+        $("#picturesGallery").attr("style", "height: 0px; perspective-origin: 0% 0px;");
         var searchRequest = document.getElementById("searchText");
         searchRequest.value = '';
 
