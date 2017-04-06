@@ -62,7 +62,7 @@ spec:
         - name: RESOLVER
           value: {{ .Values.env.resolver }}
         - name: API_HOST
-          value: {{ .Release.Name }}-{{ .Values.env.webuihost }}
+          value: {{ .Release.Name }}-{{ .Values.env.apiName }}.{{ .Release.Namespace }}.{{ .Values.env.clusterHost }}
         - name: API_PORT
           value: "{{ .Values.env.webuiport }}"
       volumes:
