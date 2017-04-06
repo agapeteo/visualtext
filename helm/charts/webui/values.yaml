@@ -13,7 +13,8 @@ env:
   webuipath: "webui/html"
   gitrepourl: "https://github.com/agapeteo/visualtext.git"
   gitbranch: "master"
-  webuihost: api.default.svc.cluster.local
+  apiName: api
+  clusterHost: svc.cluster.local
   webuiport: "8080"
   resolver: "10.0.0.10"
 service:
