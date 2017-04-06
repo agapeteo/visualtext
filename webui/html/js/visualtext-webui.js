@@ -10,7 +10,8 @@ var WEBUI_CONFIG = {
         exceptionMessage: 'Request is empty or could not get data from ',
         picturesGalleryID: 'picturesGallery',
         thumbnailCardID: 'thumbnailCard',
-        scrollSpeed: 2000
+        scrollSpeed: 2000,
+        imgContainerSelector: "picturesGallery li"
     },
     http: {
         type: "PUT",
@@ -42,6 +43,11 @@ var WEBUI_CONFIG = {
         spinnerAnchorID: 'spinnerAnchor'
     }
 };
+
+var spinner;
+var spinnerOpts = WEBUI_CONFIG.spinner.spinnerOpts;
+var spinnerTargetAnchorID = WEBUI_CONFIG.spinner.spinnerAnchorID;
+var spinnerTargetAnchor = document.getElementById(spinnerTargetAnchorID);
 
 function BaseListener() {
     this.target = '';
@@ -136,11 +142,6 @@ function RequestBuilder() {
 }
 
 function NetworkTransporter() {
-    var spinner;
-    var spinnerOpts = WEBUI_CONFIG.spinner.spinnerOpts;
-    var spinnerTargetAnchorID = WEBUI_CONFIG.spinner.spinnerAnchorID;
-    var spinnerTargetAnchor = document.getElementById(spinnerTargetAnchorID);
-
     (function() {
         this.send = function(request, callback) {
             $.ajax({
@@ -152,7 +153,6 @@ function NetworkTransporter() {
                     spinner = new Spinner(spinnerOpts).spin(spinnerTargetAnchor);
                 },
                 complete: function(){
-                    spinner.stop(spinnerTargetAnchor);
                 },
                 error: function(){
                     var exceptionMessage = WEBUI_CONFIG.html.exceptionMessage + request.url;
@@ -172,14 +172,14 @@ function NetworkTransporter() {
 
 function HTMLResponseBuilder() {
     var buildImgTag = function(response, key, index) {
-        $("#" +index + " div .caption").text(response[key]['word']);
+        $("#" + index + " .caption").text(response[key]['word']);
 
         if (response[key]['image'] === null) {
-            $("#" +index + " div img").remove();
-            $("<i class=\"fa fa-question-circle-o fa-7\" aria-hidden=\"true\" id=\"unknownWord\"></i>").insertBefore("#" +index + " .caption");
+            $("#" + index + " img").remove();
+            $("<i class=\"fa fa-question-circle-o fa-7\" aria-hidden=\"true\" id=\"unknownWord\"></i>").insertBefore("#" + index + " .caption");
             $("#unknownWord").css("font", "normal normal normal 50px/1 FontAwesome");
         } else {
-            $("#" +index + " div img").attr("src", "data:image/gif;base64," + response[key]['image']);
+            $("#" + index + " img").attr("src", "data:image/gif;base64," + response[key]['image']);
         }
     };
     var scrollToID = function(id, speed){
@@ -187,15 +187,25 @@ function HTMLResponseBuilder() {
         var targetOffset = $(id).offset().top - offSet;
         $('html,body').animate({
             scrollTop:targetOffset
-        }, speed);
+        }, speed, function() {
+            spinner.stop(spinnerTargetAnchor);
+        });
     };
     (function() {
         this.publish = function(response) {
+            $(".grid-sizer").clone().appendTo("#picturesGallery");
+
             if (typeof response === 'object') {
                 Object.keys(response).map(function(key, index) {
-                    $("#thumbnailCard").clone().appendTo("#picturesGallery").attr("id", index);
+                    $("#defaut-template").clone().appendTo("#picturesGallery").attr("id", index);
                     buildImgTag(response, key, index);
                 });
+
+                new AnimOnScroll( document.querySelector('.grid'), {
+                    minDuration : 0.4,
+                    maxDuration : 0.7,
+                    viewportFactor : 0.2
+                } );
 
                 scrollToID('#picturesGallery', 2000);
             } else {
@@ -269,7 +279,7 @@ function VisualTextController() {
             return this;
         };
         this.clearImgContainer = function() {
-            $("#picturesGallery div").remove();
+            $("#" + WEBUI_CONFIG.html.imgContainerSelector).remove();
 
             $(".exception").html('');
 
@@ -289,7 +299,11 @@ function VisualTextController() {
 
 function UICleaner() {
     this.run = function () {
-        $("#picturesGallery div").remove();
+        $('html,body').animate({
+            scrollTop: 0
+        }, 200);
+        $("#" + WEBUI_CONFIG.html.imgContainerSelector).remove();
+        $("#picturesGallery").attr("style", "height: 0px; perspective-origin: 0% 0px;");
         var searchRequest = document.getElementById("searchText");
         searchRequest.value = '';
 
