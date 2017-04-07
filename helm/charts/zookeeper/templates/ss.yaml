@@ -22,6 +22,10 @@ spec:
       containers:
       - name: k8szk
         image: gcr.io/google_samples/k8szk:v2
+        resources:
+          requests:
+            memory: {{.Values.Memory}}
+            cpu: {{.Values.Cpu}}
         ports:
         - containerPort: {{.Values.ClientPort}}
           name: client
@@ -78,6 +82,8 @@ spec:
           value: "{{.Values.ServerPort}}"
         - name: ZK_ELECTION_PORT
           value: "{{.Values.LeaderElectionPort}}"
+        - name: JAVA_OPTS
+          value: {{ .Values.java.xmx }}
         command:
         - sh
         - -c
