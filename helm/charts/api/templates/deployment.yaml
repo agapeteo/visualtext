@@ -19,12 +19,21 @@ spec:
       labels:
         app: {{ template "fullname" . }}
     spec:
+      volumes:
+      - name: config
+        configMap:
+          name: {{ printf "%s-%s" .Release.Name "config" | trunc 63 }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         env:
-        - name: {{ .Values.image.env.name }}
-          value: {{ .Release.Name }}-{{ .Values.image.env.value }}
+        - name: HAZELCAST_SERVER
+          value: {{ .Release.Name }}-hazelcast
+        - name: JAVA_OPTS
+          value: {{ .Values.java.xmx }}
+        volumeMounts:
+        - name: config
+          mountPath: /opt/config/
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           httpGet:

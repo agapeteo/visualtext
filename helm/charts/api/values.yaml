@@ -6,10 +6,7 @@ strategy:
   type: RollingUpdate
 image:
   repository: agapeteo/visualtext
-  tag: 1.0.2
-  env:
-    name: HAZELCAST_SERVER
-    value: hazelcast
+  tag: 1.0.4
   pullPolicy: IfNotPresent
   livenessProbe:
     path: /health
@@ -27,10 +24,15 @@ service:
   type: NodePort
   externalPort: 8080
   internalPort: 8080
+java:
+  xmx: -Xmx512m
 resources:
   requests:
-    cpu: 250m
-    memory: 250Mi
+    cpu: 1000m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
 restartPolicy: Always
 hpa:
   maxReplicas: 7
