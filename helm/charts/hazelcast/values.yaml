@@ -6,7 +6,7 @@ strategy:
   type: RollingUpdate
 image:
   repository: agapeteo/hazelcast-zookeeper-member
-  tag: 1.0.0
+  tag: 1.0.1
   env:
     name: ZOOKEEPER_URL
     value: zk:2181

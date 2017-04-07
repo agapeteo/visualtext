@@ -1,4 +1,6 @@
 Servers: 3
+Cpu: "1"
+Memory: "512Mi"
 ServerPort: 2888
 LeaderElectionPort: 3888
 ClientPort: 2181
@@ -11,3 +13,5 @@ PurgeHours: 1
 ProbeInitialDelaySeconds : 15
 ProbeTimeoutSeconds : 5
 LogLevel : "DEBUG"
+java:
+  xmx: -Xmx512m
