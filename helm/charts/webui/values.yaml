@@ -34,8 +34,8 @@ volumes:
   configpath: /etc/nginx/conf/conf.d
 resources:
   requests:
-    cpu: 1000m
-    memory: 512Mi
+    cpu: 200m
+    memory: 200Mi
   limits:
     cpu: 200m
     memory: 200Mi
