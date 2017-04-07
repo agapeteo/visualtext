@@ -25,6 +25,8 @@ spec:
         env:
         - name: {{ .Values.image.env.name }}
           value: {{ .Release.Name }}-{{ .Values.image.env.value }}
+        - name: JAVA_OPTS
+          value: {{ .Values.java.xmx }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
