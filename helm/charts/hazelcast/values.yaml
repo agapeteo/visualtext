@@ -16,8 +16,13 @@ service:
   type: ClusterIP
   externalPort: 5701
   internalPort: 5701
+java:
+  xmx: -Xmx512m
 resources:
   requests:
-    cpu: 250m
-    memory: 250Mi
+    cpu: 1000m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
 restartPolicy: Always
