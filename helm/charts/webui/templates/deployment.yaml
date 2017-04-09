@@ -50,6 +50,13 @@ spec:
       containers:
       - name: {{ .Chart.Name }}-{{ .Values.imagenginxlua.name }}
         image: "{{ .Values.imagenginxlua.repository }}:{{ .Values.imagenginxlua.tag }}"
+        resources:
+          requests:
+            memory: {{.Values.resources.requests.memory}}
+            cpu: {{.Values.resources.requests.cpu}}
+          limits:
+            memory: {{.Values.resources.limits.memory}}
+            cpu: {{.Values.resources.limits.cpu}}
         imagePullPolicy: {{ .Values.imagenginxlua.pullPolicy }}
         volumeMounts:
         - name: {{ .Values.volumes.volumename }}

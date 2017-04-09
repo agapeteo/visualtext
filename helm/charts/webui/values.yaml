@@ -32,4 +32,11 @@ volumes:
   volumepath: /www-data
   configname: config
   configpath: /etc/nginx/conf/conf.d
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
 restartPolicy: Always

@@ -28,10 +28,10 @@ java:
   xmx: -Xmx512m
 resources:
   requests:
-    cpu: 1000m
+    cpu: 500m
     memory: 512Mi
   limits:
-    cpu: 1000m
+    cpu: 500m
     memory: 512Mi
 restartPolicy: Always
 hpa:

@@ -6,7 +6,7 @@ strategy:
   type: RollingUpdate
 image:
   repository: agapeteo/hazelcast-zookeeper-member
-  tag: 1.0.0
+  tag: 1.0.1
   env:
     name: ZOOKEEPER_URL
     value: zk:2181
@@ -17,12 +17,12 @@ service:
   externalPort: 5701
   internalPort: 5701
 java:
-  xmx: -Xmx512m
+  xmx: -Xmx256m
 resources:
   requests:
-    cpu: 1000m
-    memory: 512Mi
+    cpu: 300m
+    memory: 256Mi
   limits:
-    cpu: 1000m
-    memory: 512Mi
+    cpu: 300m
+    memory: 256Mi
 restartPolicy: Always
